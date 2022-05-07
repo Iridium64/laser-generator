@@ -2,8 +2,7 @@ import random
 
 # data structure: each component has a dictionary based on tag, which each contains a list of components: those are a dictionary of a name (string) and a tuple containing weights
 # each tuple is (rifle, LMG, SMG, carbine, pistol, sniper)
-# remind future Caroline to move this to a centrally-stored tag system - a dictionary containing a tag for the key and a tuple for the value, allowing easy changing throught the total
-# present Caroline is too tired and would rather this be feature-complete before major rewrites
+# Tag rewrite has been done! see below, however
 # also, while we're on the topic, each assignment should *really* be a function because I repeat the same thing with almost zero variation for *each attribute HOLY FUCK*
 tag_dict = {
     "Stock Type" : {    
@@ -68,7 +67,7 @@ tag_dict = {
         "reflex sight" : (3, 1, 2, 2, 1, -2),
         "iron sight" : (0, 0, 3, 1, 3, -5),
         "low-magnification optical sight" : (-1, 2, -2, -1, -2, 2),
-        "high-magification optical sight" : (-1, 2, -4, -3, -5, 5),
+        "high-magnification optical sight" : (-1, 2, -4, -3, -5, 5),
     },
     "Bottom Accessory" : {
         "bipod" : (1, 3, -2, -3, -5, 3),
@@ -304,7 +303,6 @@ magazine_loading_dict = {
         "inside of a hinge break",
     ],
     "Light Machine Gun" : [
-        "top",
         "bottom",
         "inside of the stock",
     ],
@@ -404,12 +402,12 @@ weapon_shape_dict = {
 top_accessory_dict = {
     "Rifle" : [ 
         "reflex sight",
-        "low-magification optical sight",
+        "low-magnification optical sight",
         "high-magnification optical sight",
     ],
     "Light Machine Gun" : [
-        "low-magification optical sight",
-        "high-magification optical sight",
+        "low-magnification optical sight",
+        "high-magnification optical sight",
     ],
     "Submachinegun" : [
         "iron sight",
@@ -419,15 +417,15 @@ top_accessory_dict = {
     "Carbine" : [
         "iron sight",
         "reflex sight",
-        "low-magification optical sight",
-        "high-magification optical sight",
+        "low-magnification optical sight",
+        "high-magnification optical sight",
     ],
     "Pistol" : [
         "iron sight",
         "reflex sight",
     ],
     "Sniper" : [
-        "high-magification optical sight",
+        "high-magnification optical sight",
     ]
 }
 bottom_accessory_dict = {
