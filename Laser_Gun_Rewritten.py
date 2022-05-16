@@ -38,6 +38,13 @@ tag_dict = {
         "medium-focus" : (0, -1, 2, 1, 1, -2),
         "long-focus" : (1, 1, -1, 0, -1, 3),
     },
+    "Barrel Accessory" : {
+        "collimator" : (2, 2, -2, -2, -3, 5),
+        "beam splitter" : (0, -1, 2, -1, -2, -5),
+        "compensator" : (1, 2, -2, -2, -3, 3),
+        "bloom suppressor" : (1, -2, -1, 0, 2, 4),
+        "set of heatsink fins" : (2, 4, 4, 2, 1, -4),
+    },
     "Beam Spectrum" : {
         "infrared" : (0, 0, 0, 0, 0, 0), 
         "visible-light" : (0, 0, 0, 0, 0, 0),
@@ -243,6 +250,44 @@ barrel_focus_dict = {
         "long-focus"
     ]
 }
+barrel_accessory_dict = {
+    "Rifle" : [
+        "collimator",
+        "compensator",
+        "bloom suppressor",
+        "set of heatsink fins",
+    ],
+    "Light Machine Gun" : [
+        "collimator",
+        "beam splitter",
+        "compensator",
+        "bloom suppressor",
+        "set of heatsink fins",
+    ],
+    "Submachinegun" : [
+        "beam splitter",
+        "compensator",
+        "set of heatsink fins",
+    ],
+    "Carbine" : [
+        "collimator",
+        "beam splitter",
+        "compensator",
+        "bloom suppressor",
+        "set of heatsink fins",
+    ],
+    "Pistol" : [
+        "beam splitter",
+        "compensator",
+        "bloom suppressor",
+        "set of heatsink fins",
+    ],
+    "Sniper" : [
+        "collimator",
+        "compensator",
+        "bloom suppressor",
+    ]
+}
 beam_spectrum_dict = {
     "Rifle" : [
         "visible-light",
@@ -294,7 +339,6 @@ beam_mode_dict = {
         "pulsed",
     ]
 }
-# Add magazine (loading, shape) and accessory (underbarrel, abovebarrel)
 magazine_loading_dict = {
     "Rifle" : [
         "side",
@@ -430,7 +474,6 @@ top_accessory_dict = {
 }
 bottom_accessory_dict = {
     "Rifle" : [ 
-        "bipod",
         "foregrip",
         "empty rail",
         "tac-light",
@@ -466,7 +509,7 @@ def weighted_draw_tag(self, old_weights) -> str:
     weight_list = ["Rifle", "Light Machine Gun", "Submachinegun", "Carbine", "Pistol", "Sniper"]
     weights = []
     for value in weight_list:
-        weights.append([value, 12])
+        weights.append([value, 20])
     total_weights = 0
 
     for i in range(len(old_weights)):
@@ -533,6 +576,12 @@ class Laser_Weapon:
             self.weights[i] += tag_dict["Barrel Focus"][value[index]][i]
         self.barrel["Focus"] = value[index]
 
+        value = barrel_accessory_dict[weighted_draw_tag(self, self.weights)]
+        index = random.randrange(len(value))
+        for i in range(len(self.weights)):
+            self.weights[i] += tag_dict["Barrel Accessory"][value[index]][i]
+        self.barrel["Accessory"] = value[index]
+
         # generate stock
         value = stock_type_dict[weighted_draw_tag(self, self.weights)]
         index = random.randrange(len(value))
@@ -577,7 +626,7 @@ class Laser_Weapon:
         output = "The weapon has a " + self.stock["Type"] + ". "
         output += "The furniture is made of " + self.stock["Material"]
         output += " and is of " + self.stock["Construction"] + " construction."
-        output += "\nThe barrel is " + self.barrel["Length"] + " long and is " + self.barrel["Focus"] + "."
+        output += "\nThe barrel is " + self.barrel["Length"] + " long, is " + self.barrel["Focus"] + " and holds a " + self.barrel["Accessory"] + "."
         output += "\nThe beam is in the " + self.beam["Spectrum"] + " spectrum and is " + self.beam["Mode"] + "-fire."
         output += "\nThe battery loads from the " + self.magazine["Loading"] + " and is a " + self.magazine["Shape"] + " shape and size."
         output += "\nThe top rail holds a " + self.attachments["Top Accessory"]
